@@ -8,22 +8,12 @@ class Book:
         self.title = title
         self.price_code = price_code
 
-    def title(self) -> str:
-        return self.title
-
-    def price_code(self) -> int:
-        return self.price_code
 
 class Rental:
     def __init__(self, book: Book, days_rented: int):
         self.book = book
         self.days_rented = days_rented
 
-    def book(self) -> Book:
-        return self.book
-
-    def days_rented(self) -> int:
-        return self.days_rented
 
 class Client:
 
@@ -34,8 +24,20 @@ class Client:
     def add_rental(self, rental: Rental):
         self.rentals.append(rental)
 
-    def name(self) -> str:
-        return self.name
+    def get_charge(self, rental: Rental) -> float:
+        """Calcula o valor de um aluguel específico."""
+        amount = 0
+        if rental.book.price_code == Book.REGULAR:
+            amount += 2
+            if rental.days_rented > 2:
+                amount += (rental.days_rented - 2) * 1.5
+        elif rental.book.price_code == Book.NEW_RELEASE:
+            amount += rental.days_rented * 3
+        elif rental.book.price_code == Book.CHILDREN:
+            amount += 1.5
+            if rental.days_rented > 3:
+                amount += (rental.days_rented - 3) * 1.5
+        return amount
 
     def statement(self) -> str:
 
@@ -44,19 +46,8 @@ class Client:
         result = f"Rental summary for {self.name}\n"
         
         for rental in self.rentals:
-            amount = 0
-            
             # determine amounts for each line
-            if rental.book.price_code == Book.REGULAR:
-                amount += 2
-                if rental.days_rented > 2:
-                    amount += (rental.days_rented - 2) * 1.5
-            elif rental.book.price_code == Book.NEW_RELEASE:
-                amount += rental.days_rented * 3
-            elif rental.book.price_code == Book.CHILDREN:
-                amount += 1.5
-                if rental.days_rented > 3:
-                    amount += (rental.days_rented - 3) * 1.5
+            amount = self.get_charge(rental)
 
             # add frequent renter points
             frequent_renter_points += 1
