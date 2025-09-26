@@ -69,3 +69,27 @@ class Client:
         result += f"Total: {total_amount}\n"
         result += f"Points: {frequent_renter_points}"
         return result
+
+class Price:
+    """Superclasse para encapsular a lógica de preço e pontos."""
+
+    def get_charge(self, days_rented: int) -> float:
+        """Calcula o valor do aluguel. Deve ser implementado nas subclasses."""
+        pass
+
+    def get_frequent_renter_points(self, days_rented: int) -> int:
+        """Calcula os pontos de fidelidade. Deve ser implementado nas subclasses."""
+        pass
+
+
+class RegulaPrice(Price):
+    pass
+
+
+class NewReleasePrice(Price):
+    pass
+
+
+class ChildrenPrice(Price):
+    pass
+
